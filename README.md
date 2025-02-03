@@ -1,4 +1,4 @@
 # banking-app
 
-run: ```make```
+run: ```make```  
 down: ```make down```
