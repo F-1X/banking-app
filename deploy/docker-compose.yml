@@ -1,0 +1,28 @@
+services:
+  banking:
+    build:
+      context: ../
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      - postgres-banking
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "user", "-d", "banking"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+  postgres-banking:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: banking
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    restart: on-failure
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    
+    
